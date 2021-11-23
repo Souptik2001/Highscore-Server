@@ -1,0 +1,16 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+.main{
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 3%;
+  margin-right: 3%;
+}
+
+.sections{
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
