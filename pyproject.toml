@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "highscore-server"
 version = "0.1.0"
-description = ""
-authors = ["Your Name <you@example.com>"]
+description = "A lightweight server to store and customize highscore table completly through url."
+authors = ["Souptik Datta <souptikdatta2001@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"

@@ -15,7 +15,16 @@ except Exception as e:
 
 try :
   with sqlite3.connect(DATABASE_FILE_NAME) as db:
-    db.execute("CREATE TABLE IF NOT EXISTS Highscores ('clientid' STRING , 'playerid' STRING, 'name1' STRING, 'name2' STRING, 'score1' INTEGER, 'score2' INTEGER, 'score3' INTEGER, FOREIGN KEY (clientid) REFERENCES Clients(clientdownloadid) ON DELETE CASCADE ON UPDATE NO ACTION)")
+    db.execute("CREATE TABLE IF NOT EXISTS Highscores ('clientid' STRING , 'playerid' STRING, 'name1' STRING, 'name2' STRING, 'score1' INTEGER, 'score2' INTEGER, 'score3' INTEGER,     'lastUpdated' TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (clientid) REFERENCES Clients(clientdownloadid) ON DELETE CASCADE ON UPDATE NO ACTION)")
+    db.execute("""
+      CREATE TRIGGER IF NOT EXISTS updatethetime 
+      AFTER UPDATE
+      ON Highscores
+      FOR EACH ROW
+      BEGIN
+        UPDATE Highscores SET lastupdated=CURRENT_TIMESTAMP WHERE clientid=NEW.clientid AND playerid=NEW.playerid;
+      END;
+    """)
 except Exception as e:
   print(e)
 
@@ -32,12 +41,6 @@ def hello_world():
 @app.route('/<string:client_upload_code>/upload/<string:player_id>/<string:name1>/<string:score1>/<string:score2>/<string:score3>', methods=('GET',))
 
 def upload(client_upload_code, player_id, name1, score1, score2=None, score3=None, name2=None):
-
-
-    # player_id = flask.request.args.get('id')
-    # player_name = flask.request.args.get('name')
-    # player_time = int(flask.request.args.get('time'))
-    # player_trash = int(flask.request.args.get('trash'))
 
   allIntegerEntries = [score1, score2, score3]
   allIntegerOrders = []
@@ -104,6 +107,7 @@ def upload(client_upload_code, player_id, name1, score1, score2=None, score3=Non
                 x = x + 1
                 if(allIntegerEntries[x]!=None and old_playerdata[x+6]!=None):
                   if(allIntegerEntries[x] == old_playerdata[x+6]):
+                    if(x==len(allIntegerEntries)-1) : changeValuesToOldEntries=1
                     continue
 
                   if(allIntegerOrders[x]==0):
@@ -113,13 +117,19 @@ def upload(client_upload_code, player_id, name1, score1, score2=None, score3=Non
                     if(allIntegerEntries[x]>old_playerdata[x+6]):
                       changeValuesToOldEntries = 1
                   break
+                else:
+                  if(allIntegerEntries[x]==None):
+                    changeValuesToOldEntries=1
+                    break
 
               print(changeValuesToOldEntries)
 
               if(changeValuesToOldEntries==1):
-                while x < len(allIntegerEntries):
-                  allIntegerEntries[x] = old_playerdata[x+6]
-                  x = x + 1
+                return flask.jsonify(
+                  error="0",
+                  errorReason="Success but nothing to change",
+                  success="1"
+                )
 
               cur.execute("""UPDATE Highscores SET 'clientid'=?, 'playerid'=?, 'name1'=?, 'name2'=?, 'score1'=?, 'score2'=?, 'score3'=? WHERE clientid=? AND playerid=?""", [allInstancesOfThisPlayer[0][0], player_id, name1, name2, allIntegerEntries[0], allIntegerEntries[1], allIntegerEntries[2], allInstancesOfThisPlayer[0][0], player_id])
             cur.commit()
@@ -160,7 +170,7 @@ def download(client_download_code, sort_score1=None, sort_score2=None, sort_scor
           players = {}
           playerIndex = 0
 
-          # OUTER JOIN is not present in sqlite so this query cannot be used
+          ## OUTER JOIN is not present in sqlite so instead of this query I am using the query written below it
           # players_cur = cur.execute("""SELECT 
           # Clients.clientdownloadid, Highscores.playerid, Highscores.name1, Highscores.name2, Highscores.score1, Highscores.score2, Highscores.score3 
           # FROM 
@@ -180,14 +190,14 @@ def download(client_download_code, sort_score1=None, sort_score2=None, sort_scor
           # Highscores LEFT JOIN Clients ON Clients.clientdownloadid=Highscores.clientid)
           # WHERE clientdownloadid=?""", [client_download_code])
 
-          finalQuery = "SELECT * FROM Highscores WHERE clientid=? ORDER BY score1 " + sortClause_score1 + ", score2 " + sortClause_score2 + ", score3 " + sortClause_score3
+          finalQuery = "SELECT Clients.clientdownloadid, Highscores.playerid, Highscores.name1, Highscores.name2, Highscores.score1, Highscores.score2, Highscores.score3, Highscores.lastUpdated FROM Clients LEFT JOIN Highscores ON Highscores.clientid=Clients.clientdownloadid WHERE clientdownloadid=? ORDER BY score1 " + sortClause_score1 + ", score2 " + sortClause_score2 + ", score3 " + sortClause_score3
 
           players_cur = cur.execute(finalQuery, [client_download_code])
           players_raw = players_cur.fetchall()
 
           if(len(players_raw)==0):
 
-            finalQuery = "SELECT Clients.clientsecretid, Highscores.playerid, Highscores.name1, Highscores.name2, Highscores.score1, Highscores.score2, Highscores.score3 FROM Clients LEFT JOIN Highscores ON Highscores.clientid=Clients.clientdownloadid WHERE clientsecretid=? ORDER BY score1 " + sortClause_score1 + ", score2 " + sortClause_score2 +  ", score3 " + sortClause_score3
+            finalQuery = "SELECT Clients.clientsecretid, Highscores.playerid, Highscores.name1, Highscores.name2, Highscores.score1, Highscores.score2, Highscores.score3, Highscores.lastUpdated FROM Clients LEFT JOIN Highscores ON Highscores.clientid=Clients.clientdownloadid WHERE clientsecretid=? ORDER BY score1 " + sortClause_score1 + ", score2 " + sortClause_score2 +  ", score3 " + sortClause_score3
 
             players_raw = cur.execute(finalQuery, [client_download_code]).fetchall() #Here we are checking that the downloadid which we are porividing may be secret id
 
@@ -210,6 +220,7 @@ def download(client_download_code, sort_score1=None, sort_score2=None, sort_scor
               "score1" : player_raw[4],
               "score2" : player_raw[5],
               "score3" : player_raw[6],
+              "lastUpdated" : player_raw[7]
             }
             playerIndex = playerIndex + 1
       return flask.jsonify(players)
@@ -274,6 +285,7 @@ def dashboard(clientuploadid, sort_score1=None, sort_score2=None, sort_score3=No
               "score1" : player_raw[6],
               "score2" : player_raw[7],
               "score3" : player_raw[8],
+              "lastUpdated" : player_raw[9]
             })
           playerIndex = playerIndex + 1
 
@@ -353,6 +365,10 @@ def clear(clientuploadid):
         errorReason=str(e),
         success="0"
       )
+
+@app.route('/help', methods=('GET',))
+def helpRoute():
+  return flask.render_template('help.html')
 
 
 app.run(host='0.0.0.0', port=8080)
