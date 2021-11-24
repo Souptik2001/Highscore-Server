@@ -2,7 +2,6 @@ import datetime
 import uuid
 import math
 import sqlite3
-import jsonify
 import flask
 app = flask.Flask('app')
 DATABASE_FILE_NAME = 'database.db'
