@@ -14,6 +14,13 @@ python3 ServerDev.py
 python3 ServerProd.py
 ```
 For more information about stroing highscores visit [this page](https://scoremadeeasy.souptikdatta.repl.co/help).   
-[Try it here](https://scoremadeeasy.souptikdatta.repl.co/).   
+[Try it here](https://scoremadeeasy.souptikdatta.repl.co/).  
+****
+**Useful Information** - *This project is inspired from a similar srevice called dreamlo. But my project has certain useful improvements. For example :*  
+- In dreamlo during downloading the data all the columns were sorted in Descending order but in my version you can sort each column in different orders thus giving you more control for creating more complex relations in the leaderboard.
+* During inserting dreamlo only considered the first integer column i.e if the new value of the **first integer column** *is greater* than the present value of that column then only the row would be updated. But in my version not only you are given multiple column support but you can also specify that whether you want to insert the greater one or  the lesser one from the url only during each request.   
+
+**Dreamlo is also a great product, but my requirements were not fulfilled by dreamlo and so I created my own more customizable leaderboard server.**
+****      
 **N.B** - *I made this in about 2 days for a game that I was working on during a Game Jam. It is ready to use, but there may be some optimization or security issues. If any one finds any issues then feel free to raise an issue and let me know.*    
 Thank you.
