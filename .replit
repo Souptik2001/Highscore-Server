@@ -1,2 +1,4 @@
 run = "python3 ServerProd.py"
 # run = "python3 ServerDev.py"
+
+language = "python3"
