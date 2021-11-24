@@ -208,7 +208,7 @@ def download(client_download_code, sort_score1=None, sort_score2=None, sort_scor
                 success="0"
             )
 
-            print("!! Client porividing upload ID for downloading !!")
+            print("!! Client providing upload ID for downloading !!")
 
           for player_raw in players_raw:
             if(player_raw[1]==None): continue

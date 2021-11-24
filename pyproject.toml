@@ -8,6 +8,7 @@ authors = ["Souptik Datta <souptikdatta2001@gmail.com>"]
 python = "^3.8"
 Flask = "^2.0.2"
 jsonify = "^0.5"
+waitress = "^2.0.0"
 
 [tool.poetry.dev-dependencies]
 
