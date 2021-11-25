@@ -23,7 +23,7 @@ For more information about how to use it, visit [this page](https://scoremadeeas
 **Dreamlo is also a great product, but my requirements were not fulfilled by dreamlo and so I created my own more customizable leaderboard server.**
 ****    
 **Some challanges that I faced while working with sqlite and how I tackled them -**   
-- Sqlite does not have support for auto time column update with new timestamps on an UPDATE query. So I have to write triggers to update time after each update.  
+- Sqlite does not have support for auto time column update with new timestamps on each UPDATE query. So I have to write triggers to update time after each update.  
   ```sql
   CREATE TRIGGER IF NOT EXISTS updatethetime 
   AFTER UPDATE
