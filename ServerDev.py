@@ -166,7 +166,7 @@ def download(client_download_code, sort_score1=None, sort_score2=None, sort_scor
       with sqlite3.connect(DATABASE_FILE_NAME) as db:
         with db as cur:
           db.set_trace_callback(print)
-          players = {}
+          players = []
           playerIndex = 0
 
           ## OUTER JOIN is not present in sqlite so instead of this query I am using the query written below it
@@ -211,7 +211,7 @@ def download(client_download_code, sort_score1=None, sort_score2=None, sort_scor
 
           for player_raw in players_raw:
             if(player_raw[1]==None): continue
-            players[playerIndex] = {
+            players.append({
               "clientid" : player_raw[0], #this will not be given
               "playerid" : player_raw[1],
               "name1" : player_raw[2],
@@ -220,7 +220,7 @@ def download(client_download_code, sort_score1=None, sort_score2=None, sort_scor
               "score2" : player_raw[5],
               "score3" : player_raw[6],
               "lastUpdated" : player_raw[7]
-            }
+            })
             playerIndex = playerIndex + 1
       return flask.jsonify(players)
     except Exception as e:
