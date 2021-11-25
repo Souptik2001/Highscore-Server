@@ -13,7 +13,7 @@ python3 ServerDev.py
 ```bash
 python3 ServerProd.py
 ```
-For more information about stroing highscores visit [this page](https://scoremadeeasy.souptikdatta.repl.co/help).   
+For more information about how to use it, visit [this page](https://scoremadeeasy.souptikdatta.repl.co/help).   
 [Try it here](https://scoremadeeasy.souptikdatta.repl.co/).  
 ****
 **Useful Information** - *This project is inspired from a similar srevice called dreamlo. But my project has certain useful improvements. For example :*  
