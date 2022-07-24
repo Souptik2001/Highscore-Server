@@ -3,6 +3,9 @@ run = "python3 ServerProd.py"
 
 language = "python3"
 
+[nix]
+channel = "stable-21_11"
+
 [packager]
 language = "python3"
 ignoredPackages = ["unit_tests"]
