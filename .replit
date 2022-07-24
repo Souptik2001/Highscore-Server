@@ -2,3 +2,12 @@ run = "python3 ServerProd.py"
 # run = "python3 ServerDev.py"
 
 language = "python3"
+
+[packager]
+language = "python3"
+ignoredPackages = ["unit_tests"]
+
+  [packager.features]
+  enabledForHosting = false
+  packageSearch = true
+  guessImports = true
