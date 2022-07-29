@@ -4,6 +4,10 @@
 
 [![Run on Repl.it](https://repl.it/badge/github/Souptik2001/Highscore-Server)](https://repl.it/github/Souptik2001/Highscore-Server)
 
+**Quick note: As the data is stored in sqlite(i.e in a file), therefore when you are hosting it in replit you need(ed) an `Hacker` account for storing the files persistently. Please refer this article by replit - [Announcing File Persistence in Hosted Apps for Hackers](https://blog.replit.com/replspace-filesystems). But on February 11 2022, replit made persistent filesystem for everyone🥳! Here is the article announcing that - [Announcing File Persistence in Hosted Apps… for Everyone!](https://blog.replit.com/filesystem-persistence-for-all).**
+
+**Now back to project description :**
+
 No login, no personal data! Creating a leaderboard is as simple as **just clicking a button.** Then you will get an upload key and a download key. You can upload and download data by just **sending GET requests to different api and passing data only through the url**. *POST request, query parameters, etc. are not needed at all*.  
 You can set sorting order for each column of the table **seperatly through the url only**, no pre-configuration required. Every time you request data you can **specify the data sorting order.**    
 As it uses sqlite so no connection to external database server is required. As it uses a local file database so it is somewhat faster than using an external database server.   
@@ -20,9 +24,9 @@ python3 ServerProd.py
 For more information about how to use it, visit [this page](https://scoremadeeasy.souptikdatta.repl.co/help).   
 [Try it here](https://scoremadeeasy.souptikdatta.repl.co/).  
 ****
-**Useful Information** - *This project is inspired from a similar srevice called dreamlo. But my project has certain useful improvements. For example :*  
-- In dreamlo during downloading the data all the columns were sorted in Descending order but in my version you can sort each column in different orders thus giving you more control for creating more complex relations in the leaderboard.
-* During inserting dreamlo only considered the first integer column i.e if the new value of the **first integer column** *is greater* than the present value of that column then only the row would be updated. But in my version not only you are given multiple column support but you can also specify that whether you want to insert the greater one or  the lesser one from the url only during each request.   
+**Useful Information** - *This project is inspired from a similar service called `dreamlo`. But my project has certain useful improvements. For example :*  
+- In `dreamlo` during downloading the data all the columns were sorted in Descending order but in my version you can sort each column in different orders thus giving you more control for creating more complex relations in the leaderboard.
+* During inserting `dreamlo` only considered the first integer column i.e if the new value of the **first integer column** *is greater* than the present value of that column then only the row would be updated. But in my version not only you are given multiple column support but you can also specify that whether you want to insert the greater one or  the lesser one from the url only during each request.   
 
 **Dreamlo is also a great product, but my requirements were not fulfilled by dreamlo and so I created my own more customizable leaderboard server.**
 ****    
@@ -42,4 +46,5 @@ For more information about how to use it, visit [this page](https://scoremadeeas
 *But ultimately this was a fun learning experience.*    
 ****
 **N.B** - *I made this in about 2 days for a game that I was working on during a Game Jam. It is ready to use, but there may be some optimization or security issues. If any one finds any issues then feel free to raise an issue and let me know.*    
+
 Thank you.

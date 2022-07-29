@@ -3,8 +3,19 @@ run = "python3 ServerProd.py"
 
 language = "python3"
 
+entrypoint = "ServerProd.py"
+
+hidden = ["venv", ".config", "**/__pycache__", "**/.mypy_cache", "**/*.pyc"]
+
 [nix]
 channel = "stable-21_11"
+
+[languages.python3]
+pattern = "**/*.py"
+syntax = "python"
+
+  [languages.python3.languageServer]
+  start = ["pylsp"]
 
 [interpreter]
   [interpreter.command]
